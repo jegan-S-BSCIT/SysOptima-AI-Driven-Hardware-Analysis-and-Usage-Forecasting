@@ -1,0 +1,359 @@
+================================================================================
+SYSTEM PERFORMANCE REPORT
+Intelligent Computer Performance Analysis and Guidance System
+================================================================================
+
+CPU ANALYSIS
+────────────────────────────────────────────────────────────────────────────────
+Status: Working
+Benchmark Score: 90.0/100
+Health: Good
+Explanation:
+  - Physical Cores: 4
+  - Logical Cores: 8
+  - Current Usage: 32.5%
+  - Current Clock Speed: 3201 MHz
+
+  Your CPU is performing at good levels.
+  Your processor is modern and powerful, suitable for gaming, video editing, and heavy computing tasks.
+
+DIAGNOSTIC EXPLANATION:
+  What: CPU is working normally with good performance
+  Why: You have a capable multi-core processor with adequate clock speed
+  Performance Impact: Your CPU can handle multitasking and demanding applications efficiently
+
+
+RAM ANALYSIS
+────────────────────────────────────────────────────────────────────────────────
+Status: Warning
+Benchmark Score: 49.0/100
+Health: Poor
+Explanation:
+  - Total RAM: 11.7 GB
+  - Used RAM: 10.2 GB (87.1%)
+  - Available RAM: 1.5 GB
+  - Swap Memory Used: 0.02 GB
+
+  Your RAM capacity is poor for modern multitasking.
+  WARNING: Your RAM is heavily used. Close unnecessary programs to free up memory.
+
+DIAGNOSTIC EXPLANATION:
+  What: RAM usage is critically high at 87.1%
+  Why: Many applications are running simultaneously, consuming most of your available memory
+  Caused By: Running too many programs at once, heavy applications like browsers with many tabs
+  
+  How to Fix:
+    IMMEDIATE (Short-term relief):
+      1. Close browser tabs you're not using
+      2. Close background applications in Task Manager (Ctrl+Shift+Esc)
+      3. Restart your computer to clear RAM
+
+    LONG-TERM (Permanent solution):
+      1. Upgrade to 16GB RAM (recommended for modern systems)
+      2. Use lighter applications (e.g., VS Code instead of heavy IDEs)
+      3. Monitor which programs use the most RAM using Task Manager
+
+
+GPU ANALYSIS
+────────────────────────────────────────────────────────────────────────────────
+Status: Working
+Benchmark Score: 83.8/100
+Health: Good
+Explanation:
+  - GPU Model: NVIDIA GeForce RTX 3050 6GB Laptop GPU
+  - VRAM Total: 6.0 GB
+  - VRAM Used: 0.91 GB
+  - GPU Load: 3.0%
+  - Temperature: 43°C
+
+  Your GPU performance is good for graphics-intensive tasks.
+  Your GPU is excellent for gaming and video processing.
+
+DIAGNOSTIC EXPLANATION:
+  What: GPU is performing very well
+  Why: You have an NVIDIA RTX 3050 with 6GB dedicated VRAM and low temperature
+  Performance Impact: 
+    - Excellent for 1080p gaming at high settings
+    - Good for 1440p gaming at medium settings
+    - Suitable for video editing and 3D rendering
+  
+  Status: Healthy and well-utilized. GPU temperature of 43°C is normal and safe.
+
+
+STORAGE ANALYSIS
+────────────────────────────────────────────────────────────────────────────────
+Status: Warning
+Benchmark Score: 16.6/100
+Health: Poor
+Explanation:
+
+  Drive C:\ (System Drive):
+    - File System: NTFS
+    - Total Capacity: 158.2 GB
+    - Used Space: 148.0 GB (93.5%)
+    - Free Space: 10.2 GB ⚠️ CRITICAL
+
+  Drive D:\:
+    - File System: NTFS
+    - Total Capacity: 158.2 GB
+    - Used Space: 67.6 GB (42.7%)
+    - Free Space: 90.7 GB ✓ Good
+
+  Drive E:\:
+    - File System: NTFS
+    - Total Capacity: 158.2 GB
+    - Used Space: 30.8 GB (19.4%)
+    - Free Space: 127.5 GB ✓ Excellent
+
+  Your storage health is poor.
+  CRITICAL: Your storage is almost full. This severely impacts system performance.
+
+DIAGNOSTIC EXPLANATION:
+  What: C: drive is almost full (93.5% used) - CRITICAL ISSUE
+  
+  Why: Limited storage space available for system operations
+  
+  Caused By:
+    1. Large files accumulating (videos, games, software installations)
+    2. Duplicate or redundant data not being cleaned up
+    3. Temporary files and cache not being cleared
+    4. Windows updates taking up space
+  
+  Performance Impact:
+    - System becomes noticeably slower
+    - Disk read/write operations are delayed
+    - Windows Update may fail
+    - Programs may crash due to insufficient space
+    - Defragmentation is impossible on low-space drives
+  
+  How to Fix (DO THIS NOW):
+    
+    EMERGENCY CLEANUP (Free up 20-30 GB immediately):
+    1. Delete Temporary Files:
+       - Press Windows+R, type "temp", delete all files
+       - Use Disk Cleanup utility (Win+X → Disk Management → Disk Cleanup)
+    
+    2. Uninstall Unused Programs:
+       - Settings → Apps → Installed Apps → Uninstall applications you don't use
+       - Focus on large games and software
+    
+    3. Move Large Files:
+       - Move videos, downloads, and media to D:\ or E:\
+       - Move old projects to external drive or cloud storage
+    
+    4. Clear Browser Cache:
+       - Edge/Chrome: Settings → Privacy → Clear browsing data
+       - Select "All time" and include cache
+    
+    LONG-TERM SOLUTIONS:
+    1. Upgrade C: drive to larger SSD (500GB or 1TB)
+    2. Set up automatic file cleanup with system utilities
+    3. Regularly move large files to secondary drives
+    4. Enable cloud storage (OneDrive, Google Drive) for archiving
+
+
+BOTTLENECK ANALYSIS
+────────────────────────────────────────────────────────────────────────────────
+Identified Bottleneck: STORAGE
+Priority Level: CRITICAL
+
+Why This is a Bottleneck:
+  The storage drive (C:\) is the PRIMARY BOTTLENECK in your system. Here's why:
+  
+  1. Capacity Constraint: At 93.5% usage, there's almost no free space for:
+     - Windows to perform operations
+     - Temporary file creation
+     - System cache
+     - Virtual memory expansion
+  
+  2. Performance Impact:
+     - Disk I/O becomes much slower
+     - Applications may hang or freeze
+     - System responsiveness decreases
+     - Even though your CPU and GPU are good, the storage bottle prevents them from working efficiently
+  
+  3. Cascading Effects:
+     - RAM becomes substitute with slow virtual memory
+     - System becomes overall sluggish despite good CPU/GPU
+     - File operations take significantly longer
+
+Why Other Components Aren't the Main Bottleneck:
+  - CPU (90/100): Excellent, not limiting performance
+  - GPU (83.8/100): Very good, capable for most tasks
+  - RAM (49/100): Moderately full but has workaround with virtual memory
+
+Action: IMMEDIATE storage cleanup is required for system optimization.
+
+
+OVERALL SYSTEM HEALTH
+────────────────────────────────────────────────────────────────────────────────
+Health Score: 59.8/100
+Classification: AVERAGE
+Status: Your system is performing at an average level.
+
+Health Breakdown:
+  ✓ CPU:      90.0/100 - Excellent component
+  ⚠ RAM:      49.0/100 - Needs optimization
+  ✓ GPU:      83.8/100 - Very good component
+  ✗ Storage:  16.6/100 - Critical issue
+
+Overall Assessment:
+  Your system has GOOD HARDWARE (CPU and GPU are capable), but is being LIMITED by:
+  1. Storage capacity (primary bottleneck)
+  2. Available RAM (secondary concern)
+  
+  This is a SOLVABLE PROBLEM. Freeing up storage and RAM will significantly improve performance.
+
+
+USAGE CAPABILITY ASSESSMENT
+────────────────────────────────────────────────────────────────────────────────
+
+GAMING:
+  Current Capability: LOW (720p or 1080p with low settings)
+  Reason: Storage and RAM limitations prevent optimal performance
+  What Can Run:
+    - Indie games: ✓ Yes
+    - Esports titles (CS2, Valorant): ✓ Yes (with settings adjustment)
+    - AAA games (Cyberpunk 2077): ✗ No (without optimization)
+  
+  To Improve: Free up storage and upgrade RAM to 16GB
+
+VIDEO EDITING:
+  Current Capability: NOT RECOMMENDED
+  Reason: Insufficient storage space and RAM
+  Recommendation: 
+    - After freeing storage and upgrading to 16GB RAM, this becomes possible
+    - 1080p editing would become feasible
+    - 4K editing would still require additional improvements
+
+PROGRAMMING & DESIGN:
+  Current Capability: LIMITED for Development
+  Reason: RAM constraints when running multiple applications
+  Can Perform:
+    - Basic web development: ✓ Possible
+    - Small Python/Java projects: ✓ Possible
+    - Heavy IDEs with many extensions: ✗ Problematic
+  
+  Recommendation: Close unnecessary programs while coding
+
+
+OPTIMIZATION RECOMMENDATIONS
+────────────────────────────────────────────────────────────────────────────────
+
+PRIORITY 1 - CRITICAL (Do Immediately):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Storage Cleanup (FREE 20-30 GB)
+   Action: Delete unnecessary files from C:\ drive
+   Steps:
+     a) Use Disk Cleanup Utility
+        - Right-click C:\ → Properties → Disk Cleanup
+        - Select all options → Clean up system files
+        - Expected recovery: 5-10 GB
+     
+     b) Uninstall unused programs
+        - Settings → Apps → Installed Apps
+        - Uninstall large applications you don't use
+        - Expected recovery: 10-20 GB
+     
+     c) Move media files to D:\ or E:\
+        - Documents, Pictures, Videos, Downloads
+        - Expected recovery: 5-15 GB
+   
+   Impact: This alone will solve your primary performance issue
+   Estimated time: 30-60 minutes
+
+2. RAM Management (Optimize Current Usage)
+   Action: Reduce background application load
+   Steps:
+     a) Open Task Manager (Ctrl+Shift+Esc)
+     b) Disable startup programs you don't need
+     c) Close unused browser tabs (each tab uses ~50-100MB)
+   
+   Impact: Immediate system responsiveness improvement
+   Estimated time: 10 minutes
+
+
+PRIORITY 2 - IMPORTANT (Within 1-2 weeks):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. RAM Upgrade (11.7 GB → 16 GB)
+   Reason: Current 11.7GB is borderline; 16GB is now standard
+   Cost: ~$30-60 USD (budget option)
+   Expected improvement: Smooth multitasking, no more RAM warnings
+   Impact: 30-40% performance improvement for multitasking
+
+2. Storage Expansion (Optional but Recommended)
+   Current situation: C: drive is too small for modern use
+   Option A: Add secondary SSD (500GB)
+     - Cost: $30-50 USD
+     - Benefits: More space, faster than external drives
+   
+   Option B: Upgrade C: drive to larger SSD (500GB-1TB)
+     - Cost: $50-100 USD
+     - Benefits: Much faster than current setup
+     - This is a better long-term solution
+
+
+PRIORITY 3 - NICE TO HAVE (For enhancement):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Cooling Improvement (Optional)
+   Current GPU temperature: 43°C (EXCELLENT)
+   Current CPU temperature: Not measured, but likely good
+   Recommendation: Not urgent - your cooling is adequate
+   
+2. Disk Health Check
+   Action: Run CrystalDiskInfo to check SSD/HDD health
+   Reason: Preventive maintenance
+
+
+MAINTENANCE SCHEDULE
+────────────────────────────────────────────────────────────────────────────────
+
+Weekly:
+  - Delete temporary files (Disk Cleanup)
+  - Close unused browser tabs
+  - Check available storage space
+
+Monthly:
+  - Uninstall unused programs
+  - Clear cache and browser data
+  - Monitor RAM usage patterns
+
+Quarterly:
+  - Run full disk cleanup
+  - Check for malware (Windows Defender)
+  - Update drivers and software
+
+
+SUMMARY FOR NON-TECHNICAL USERS
+────────────────────────────────────────────────────────────────────────────────
+
+In Simple Terms:
+  Your computer is like a desk with good tools (CPU and GPU) but a very full filing cabinet (storage).
+  
+  Problems:
+    1. Your C: drive is almost full (like a cabinet that's overstuffed)
+    2. Your RAM is almost full (like having too many active projects on your desk)
+  
+  Solutions:
+    1. Clean up your C: drive by deleting unnecessary files (URGENT)
+    2. Close unused programs to free up RAM (IMMEDIATE)
+    3. Upgrade RAM from 11.7GB to 16GB (IMPORTANT)
+    4. Consider larger storage drive later (OPTIONAL)
+  
+  Expected Result After Fixes:
+    - System will run 40-50% faster
+    - No more random slowdowns
+    - Can multitask better
+    - Can handle more demanding applications
+
+
+================================================================================
+Report Generated: 2026-02-04 19:46:27
+System: AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD
+Version: 1.0
+Project: Intelligent Computer Performance Analysis and Guidance System
+B.Sc. IT Final Year Project
+================================================================================

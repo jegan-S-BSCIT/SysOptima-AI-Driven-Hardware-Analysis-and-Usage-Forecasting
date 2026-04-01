@@ -1,0 +1,118 @@
+{
+  "version": "2.0",
+  "last_updated": "2026-02-04",
+  "description": "Lightweight benchmark reference values for B.Sc. IT project",
+  
+  "cpu_reference": {
+    "description": "CPU Benchmark Reference - Mathematical workload score (0-100)",
+    "cores_performance": {
+      "2": 30,
+      "4": 50,
+      "6": 70,
+      "8": 85,
+      "12": 95,
+      "16": 100
+    },
+    "clock_speed_performance": {
+      "2.0": 30,
+      "2.5": 45,
+      "3.0": 60,
+      "3.5": 75,
+      "4.0": 90,
+      "4.5": 100
+    },
+    "average_score": 65,
+    "description_detail": "Combines logical core count and clock frequency for overall CPU performance"
+  },
+  
+  "legacy_cpu_benchmarks": {
+    "single_thread": {
+      "min": 10000,
+      "max": 1000000,
+      "reference_systems": {
+        "low_end": 50000,
+        "mid_range": 300000,
+        "high_end": 700000
+      }
+    },
+    "multi_thread": {
+      "min": 50000,
+      "max": 5000000,
+      "reference_systems": {
+        "low_end": 200000,
+        "mid_range": 1500000,
+        "high_end": 3500000
+      }
+    }
+  },
+  
+  "memory_benchmarks": {
+    "sequential_read_mbps": {
+      "min": 100,
+      "max": 50000,
+      "reference_systems": {
+        "ddr3": 10000,
+        "ddr4": 25000,
+        "ddr5": 40000
+      }
+    },
+    "sequential_write_mbps": {
+      "min": 100,
+      "max": 50000,
+      "reference_systems": {
+        "ddr3": 9000,
+        "ddr4": 23000,
+        "ddr5": 38000
+      }
+    },
+    "random_access_per_sec": {
+      "min": 10000,
+      "max": 10000000,
+      "reference_systems": {
+        "low_end": 500000,
+        "mid_range": 3000000,
+        "high_end": 7000000
+      }
+    }
+  },
+  
+  "disk_benchmarks": {
+    "sequential_read_mbps": {
+      "min": 10,
+      "max": 5000,
+      "reference_systems": {
+        "hdd": 150,
+        "sata_ssd": 550,
+        "nvme_ssd": 3500
+      }
+    },
+    "sequential_write_mbps": {
+      "min": 10,
+      "max": 5000,
+      "reference_systems": {
+        "hdd": 120,
+        "sata_ssd": 520,
+        "nvme_ssd": 3000
+      }
+    },
+    "iops": {
+      "min": 100,
+      "max": 100000,
+      "reference_systems": {
+        "hdd": 200,
+        "sata_ssd": 90000,
+        "nvme_ssd": 500000
+      }
+    }
+  },
+  
+  "system_scores": {
+    "ratings": {
+      "0-30": "Below Average - Consider upgrades",
+      "30-50": "Fair - Adequate for basic tasks",
+      "50-70": "Good - Suitable for most tasks",
+      "70-85": "Very Good - Great for demanding tasks",
+      "85-100": "Excellent - Top-tier performance"
+    }
+  }
+}

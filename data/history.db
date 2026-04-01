@@ -1,0 +1,4 @@
+-- SQLite database for storing benchmark history
+-- This file will be initialized by the application
+
+-- Placeholder file - actual database will be created by SQLite

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SysOptima - System Performance Analysis</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        danger: '#EF4444',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Smooth animations */
+        * {
+            transition: all 0.2s ease;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* Card hover effect */
+        .card {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .card:hover {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        }
+        
+        /* Pulse animation for active monitoring */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4F46E5;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary to-blue-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">SysOptima</h1>
+                        <p class="text-sm text-gray-500">Intelligent Performance Analysis</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div id="monitoring-indicator" class="hidden items-center space-x-2 px-3 py-1 bg-green-50 border border-green-200 rounded-lg">
+                        <div class="w-2 h-2 bg-green-500 rounded-full pulse-animation"></div>
+                        <span class="text-sm text-green-700 font-medium">Monitoring Active</span>
+                    </div>
+                    <div class="text-sm text-gray-500" id="last-update">Last update: Never</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Navigation Tabs -->
+    <nav class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex space-x-8">
+                <button onclick="showTab('live-monitor')" id="tab-live-monitor" class="tab-button py-4 px-1 border-b-2 border-primary font-medium text-sm text-primary">
+                    Live Monitor
+                </button>
+                <button onclick="showTab('benchmark')" id="tab-benchmark" class="tab-button py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                    Benchmark
+                </button>
+                <button onclick="showTab('comparison')" id="tab-comparison" class="tab-button py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                    Comparison
+                </button>
+                <button onclick="showTab('health')" id="tab-health" class="tab-button py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                    System Health
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        
+        <!-- Live Monitor Tab -->
+        <div id="live-monitor-tab" class="tab-content">
+            <!-- Control Panel -->
+            <div class="bg-white rounded-lg shadow card p-6 mb-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-900 mb-1">Live Monitor Control</h2>
+                        <p class="text-sm text-gray-500">Start/stop real-time system monitoring</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <label class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-700">Refresh:</span>
+                            <select id="refresh-interval" class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="1000" selected>1s</option>
+                                <option value="2000">2s</option>
+                                <option value="5000">5s</option>
+                            </select>
+                        </label>
+                        <button id="start-btn" onclick="startMonitoring()" class="bg-primary hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-medium flex items-center space-x-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span>Start</span>
+                        </button>
+                        <button id="stop-btn" onclick="stopMonitoring()" disabled class="bg-gray-300 text-gray-500 px-6 py-2 rounded-lg font-medium flex items-center space-x-2 cursor-not-allowed">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/>
+                            </svg>
+                            <span>Stop</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Metrics Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                
+                <!-- CPU Card -->
+                <div class="bg-white rounded-lg shadow card p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                                </svg>
+                            </div>
+                            <span class="text-sm font-medium text-gray-600">CPU USAGE</span>
+                        </div>
+                        <span id="cpu-change" class="text-xs text-gray-400">--</span>
+                    </div>
+                    <div class="mb-2">
+                        <div class="text-3xl font-bold text-gray-900" id="cpu-value">0<span class="text-lg">%</span></div>
+                        <div class="text-sm text-gray-500 mt-1" id="cpu-info">-- cores @ -- GHz</div>
+                    </div>
+                    <div class="mt-4">
+                        <canvas id="cpu-chart" height="60"></canvas>
+                    </div>
+                </div>
+                
+                <!-- RAM Card -->
+                <div class="bg-white rounded-lg shadow card p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
+                                </svg>
+                            </div>
+                            <span class="text-sm font-medium text-gray-600">RAM USAGE</span>
+                        </div>
+                        <span id="ram-change" class="text-xs text-gray-400">--</span>
+                    </div>
+                    <div class="mb-2">
+                        <div class="text-3xl font-bold text-gray-900" id="ram-value">0<span class="text-lg">GB</span></div>
+                        <div class="text-sm text-gray-500 mt-1" id="ram-info">0% of 0GB</div>
+                    </div>
+                    <div class="mt-4">
+                        <canvas id="ram-chart" height="60"></canvas>
+                    </div>
+                </div>
+                
+                <!-- GPU Card -->
+                <div class="bg-white rounded-lg shadow card p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                                </svg>
+                            </div>
+                            <span class="text-sm font-medium text-gray-600">GPU LOAD</span>
+                        </div>
+                        <span id="gpu-change" class="text-xs text-gray-400">--</span>
+                    </div>
+                    <div class="mb-2">
+                        <div class="text-3xl font-bold text-gray-900" id="gpu-value">0<span class="text-lg">%</span></div>
+                        <div class="text-sm text-gray-500 mt-1" id="gpu-info">Temp: --°C</div>
+                    </div>
+                    <div class="mt-4">
+                        <canvas id="gpu-chart" height="60"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Disk Card -->
+                <div class="bg-white rounded-lg shadow card p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>
+                                </svg>
+                            </div>
+                            <span class="text-sm font-medium text-gray-600">DISK I/O</span>
+                        </div>
+                        <span id="disk-change" class="text-xs text-green-600">Active</span>
+                    </div>
+                    <div class="mb-2">
+                        <div class="text-3xl font-bold text-gray-900" id="disk-value">0<span class="text-lg">MB/s</span></div>
+                        <div class="text-sm text-gray-500 mt-1" id="disk-info">Read/Write Speed</div>
+                    </div>
+                    <div class="mt-4">
+                        <canvas id="disk-chart" height="60"></canvas>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <!-- Benchmark Tab -->
+        <div id="benchmark-tab" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow card p-6 mb-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-900 mb-1">System Benchmark</h2>
+                        <p class="text-sm text-gray-500">Run lightweight performance tests (takes ~5 seconds)</p>
+                    </div>
+                    <button id="run-benchmark-btn" onclick="runBenchmark()" class="bg-primary hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium flex items-center space-x-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        <span>Run Benchmark</span>
+                    </button>
+                </div>
+                
+                <div id="benchmark-loading" class="hidden text-center py-12">
+                    <div class="spinner mx-auto mb-4"></div>
+                    <p class="text-gray-600">Running benchmarks...</p>
+                    <p class="text-sm text-gray-400 mt-2">This will take approximately 5 seconds</p>
+                </div>
+                
+                <div id="benchmark-results" class="hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <!-- CPU Benchmark -->
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="text-sm text-gray-600 mb-2">CPU Score</div>
+                            <div class="text-3xl font-bold text-gray-900 mb-1" id="bench-cpu-score">--</div>
+                            <div class="text-sm" id="bench-cpu-rating">--</div>
+                            <div class="text-xs text-gray-400 mt-2" id="bench-cpu-time">--</div>
+                        </div>
+                        
+                        <!-- RAM Benchmark -->
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="text-sm text-gray-600 mb-2">RAM Score</div>
+                            <div class="text-3xl font-bold text-gray-900 mb-1" id="bench-ram-score">--</div>
+                            <div class="text-sm" id="bench-ram-rating">--</div>
+                            <div class="text-xs text-gray-400 mt-2" id="bench-ram-time">--</div>
+                        </div>
+                        
+                        <!-- Storage Benchmark -->
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="text-sm text-gray-600 mb-2">Storage Score</div>
+                            <div class="text-3xl font-bold text-gray-900 mb-1" id="bench-storage-score">--</div>
+                            <div class="text-sm" id="bench-storage-rating">--</div>
+                            <div class="text-xs text-gray-400 mt-2" id="bench-storage-speed">--</div>
+                        </div>
+                        
+                        <!-- GPU Benchmark -->
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="text-sm text-gray-600 mb-2">GPU Score</div>
+                            <div class="text-3xl font-bold text-gray-900 mb-1" id="bench-gpu-score">--</div>
+                            <div class="text-sm" id="bench-gpu-rating">--</div>
+                            <div class="text-xs text-gray-400 mt-2" id="bench-gpu-class">--</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Overall Score -->
+                    <div class="bg-gradient-to-r from-primary to-blue-600 rounded-lg p-6 text-white text-center mb-6">
+                        <div class="text-sm opacity-90 mb-2">Overall System Score</div>
+                        <div class="text-5xl font-bold mb-2" id="bench-overall-score">--</div>
+                        <div class="text-sm opacity-90">
+                            Bottleneck: <span class="font-semibold" id="bench-bottleneck">--</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Benchmark Chart -->
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-sm font-semibold text-gray-700 mb-4">Component Scores</h3>
+                        <canvas id="benchmark-chart" height="80"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Comparison Tab -->
+        <div id="comparison-tab" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow card p-6">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">Hardware Comparison</h2>
+                <p class="text-sm text-gray-500 mb-6">Compare your system with reference (fresh/average) hardware</p>
+                
+                <div id="comparison-empty" class="text-center py-12">
+                    <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                    <p class="text-gray-600 mb-4">No benchmark data available</p>
+                    <p class="text-sm text-gray-400">Run a benchmark first to see comparison</p>
+                </div>
+                
+                <div id="comparison-data" class="hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <!-- Comparison Chart -->
+                        <div class="border border-gray-200 rounded-lg p-6">
+                            <h3 class="text-sm font-semibold text-gray-700 mb-4">Score Comparison</h3>
+                            <canvas id="comparison-chart" height="250"></canvas>
+                        </div>
+                        
+                        <!-- Status Table -->
+                        <div class="border border-gray-200 rounded-lg p-6">
+                            <h3 class="text-sm font-semibold text-gray-700 mb-4">Component Status</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <span class="text-sm font-medium">CPU</span>
+                                    <span id="comp-cpu-status" class="text-sm px-3 py-1 rounded-full">--</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <span class="text-sm font-medium">RAM</span>
+                                    <span id="comp-ram-status" class="text-sm px-3 py-1 rounded-full">--</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <span class="text-sm font-medium">Storage</span>
+                                    <span id="comp-storage-status" class="text-sm px-3 py-1 rounded-full">--</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <span class="text-sm font-medium">GPU</span>
+                                    <span id="comp-gpu-status" class="text-sm px-3 py-1 rounded-full">--</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-primary bg-opacity-10 rounded-lg">
+                                    <span class="text-sm font-semibold">Overall</span>
+                                    <span id="comp-overall-status" class="text-sm font-semibold px-3 py-1 rounded-full">--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Detailed Differences -->
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-sm font-semibold text-gray-700 mb-4">Detailed Comparison</h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Component</th>
+                                        <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Your Score</th>
+                                        <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Reference</th>
+                                        <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Difference</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="comparison-table" class="bg-white divide-y divide-gray-200">
+                                    <!-- Populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- System Health Tab -->
+        <div id="health-tab" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow card p-6">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">System Health & Recommendations</h2>
+                
+                <div id="health-empty" class="text-center py-12">
+                    <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <p class="text-gray-600 mb-4">No health data available</p>
+                    <p class="text-sm text-gray-400">Run a benchmark first to see system health</p>
+                </div>
+                
+                <div id="health-data" class="hidden">
+                    <!-- Overall Health -->
+                    <div id="health-status-card" class="rounded-lg p-8 text-white text-center mb-6">
+                        <div class="text-sm opacity-90 mb-2">Overall System Health</div>
+                        <div class="text-6xl font-bold mb-2" id="health-score">--</div>
+                        <div class="text-xl font-semibold" id="health-status-text">--</div>
+                        <div class="text-sm opacity-90 mt-4">
+                            Primary Bottleneck: <span class="font-semibold" id="health-bottleneck">--</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Recommendations -->
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-sm font-semibold text-gray-700 mb-4">Recommendations</h3>
+                        <div id="recommendations-list" class="space-y-3">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="text-center text-sm text-gray-500">
+                <p>SysOptima - B.Sc. IT Final Year Project</p>
+                <p class="mt-1">Intelligent Computer Performance Analysis and Guidance System</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script src="/static/app.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,45 @@
+# SysOptima Dependencies - Professional System Analysis Tool
+
+# System monitoring and hardware detection
+psutil>=5.9.0
+py-cpuinfo>=9.0.0
+GPUtil>=1.4.0
+
+# Data visualization and plotting
+matplotlib>=3.5.0
+seaborn>=0.12.0
+
+# Data handling
+pandas>=1.3.0
+numpy>=1.21.0
+
+# System information (Windows-specific)
+wmi>=1.5.1; platform_system=="Windows"
+
+# Modern UI Framework - CustomTkinter for professional, modern appearance
+customtkinter>=5.2.0
+# Removed nonexistent package `tkinter-tools` to prevent install failures
+
+# Image processing
+Pillow>=10.0.0
+
+# Utilities
+packaging>=21.0
+python-dateutil>=2.8.2
+
+# Optional: For enhanced performance metrics
+# Removed optional `psutil-extra` (not a standard package)
+
+# Optional: For system optimization (if included)
+# ctypes (built-in)
+# winreg (built-in for Windows)
+
+# Environment Management
+python-dotenv>=1.0.0
+
+# AI/Machine Learning APIs
+google-generativeai>=0.3.0
+openai>=1.0.0
+
+# Web dependencies removed: desktop-only application (Tkinter)
+
